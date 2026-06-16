@@ -142,9 +142,9 @@ export default function ScratchCard({
       ctx.translate(width / 2, height * 0.62);
       ctx.scale(s, s);
       ctx.translate(-66.5, -66.5);
-      ctx.fillStyle = "rgba(255,255,255,0.16)";
+      ctx.fillStyle = "rgba(255,255,255,0.18)"; // faint badge backing
       ctx.fill(new Path2D(BADGE_PATH));
-      ctx.fillStyle = "rgba(255,255,255,0.45)";
+      ctx.fillStyle = "#fff"; // crisp white gift
       ctx.fill(new Path2D(GIFT_PATH));
       ctx.restore();
     }
