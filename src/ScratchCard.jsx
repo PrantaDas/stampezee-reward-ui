@@ -58,7 +58,8 @@ const ticketMask = `url("data:image/svg+xml,${encodeURIComponent(
  *  glitter         bool    Fire confetti on reveal.                        default true
  *  glitterDuration number  How long glitter falls, in ms.                 default 4000
  *  glitterColors   string[] Hex colors for the glitter.
- *  onComplete      fn      Called once when the card is revealed.
+ *  onScratchStart  fn      Called once when the user first starts scratching.
+ *  onComplete      fn      Called once when revealRatio is reached.
  *  style           object  Extra styles for the outer wrapper.
  */
 export default function ScratchCard({
@@ -82,6 +83,7 @@ export default function ScratchCard({
   glitter = true,
   glitterDuration = 4000,
   glitterColors,
+  onScratchStart,
   onComplete,
   style,
 }) {
@@ -89,6 +91,7 @@ export default function ScratchCard({
   const nameRef = useRef(null); // reward-name element, for accurate region sampling
   const drawing = useRef(false);
   const moves = useRef(0);
+  const started = useRef(false); // onScratchStart fired once
   const fired = useRef(false); // glitter/onComplete fired once
   const [revealed, setRevealed] = useState(false);
 
@@ -189,6 +192,7 @@ export default function ScratchCard({
       complete();
     } else if (fired.current || revealed) {
       fired.current = false;
+      started.current = false;
       moves.current = 0;
       setRevealed(false);
       paintCover();
@@ -247,6 +251,10 @@ export default function ScratchCard({
 
   const start = (e) => {
     drawing.current = true;
+    if (!started.current) {
+      started.current = true;
+      onScratchStart?.();
+    }
     e.currentTarget.setPointerCapture?.(e.pointerId);
     eraseAt(e);
   };

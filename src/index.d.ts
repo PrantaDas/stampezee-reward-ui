@@ -79,7 +79,9 @@ export interface ScratchCardProps {
   glitterDuration?: number;
   /** Hex colors for the glitter. */
   glitterColors?: string[];
-  /** Called once when the card is revealed. */
+  /** Called once when the user first starts scratching. */
+  onScratchStart?: () => void;
+  /** Called once when `revealRatio` is reached. */
   onComplete?: () => void;
   /** Extra styles for the outer wrapper. */
   style?: React.CSSProperties;

@@ -96,7 +96,8 @@ Pass `scratched={true}` to reveal it programmatically (skips the scratching).
 | `glitter` | bool | `true` | Fire confetti on reveal |
 | `glitterDuration` | number | `4000` | How long glitter falls (ms) |
 | `glitterColors` | string[] | lib palette | Hex colors for the glitter |
-| `onComplete` | fn | — | Called once when revealed |
+| `onScratchStart` | fn | — | Called once when the user first starts scratching |
+| `onComplete` | fn | — | Called once when `revealRatio` is reached |
 
 ## License
 
