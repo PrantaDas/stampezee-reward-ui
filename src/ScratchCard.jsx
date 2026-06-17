@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import confetti from "canvas-confetti";
 import { transparentRatio } from "./scratchRatio.js";
 import { parseLinearGradient, gradientEndpoints } from "./cssGradient.js";
@@ -154,7 +154,8 @@ export default function ScratchCard({
     }
   }
 
-  useEffect(() => {
+  // paint before the browser shows the frame, else the reward flashes unscratched
+  useLayoutEffect(() => {
     paintCover();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [background, width, height, watermark, tearLine]);

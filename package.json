@@ -28,7 +28,7 @@
   ],
   "license": "MIT",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 3000",
     "test": "node test_scratch.mjs",
     "build": "vite build && cp src/index.d.ts dist/index.d.ts",
     "preview": "vite preview",
