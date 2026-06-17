@@ -91,6 +91,7 @@ export default function ScratchCard({
   const nameRef = useRef(null); // reward-name element, for accurate region sampling
   const drawing = useRef(false);
   const moves = useRef(0);
+  const last = useRef(null); // previous pointer pos for continuous strokes
   const started = useRef(false); // onScratchStart fired once
   const fired = useRef(false); // glitter/onComplete fired once
   const [revealed, setRevealed] = useState(false);
@@ -235,10 +236,24 @@ export default function ScratchCard({
     const y = ((e.clientY - rect.top) / rect.height) * height;
     const ctx = cv.getContext("2d");
     ctx.globalCompositeOperation = "destination-out";
-    ctx.fillStyle = "#000"; // opaque: destination-out erases by the fill's alpha
+    ctx.fillStyle = "#000"; // opaque => full erase, no faded edges
+    ctx.strokeStyle = "#000";
+
+    // draw a continuous round-capped line from the last point (smooth, no gaps)
+    const p = last.current;
+    if (p) {
+      ctx.lineWidth = brushSize * 2;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.beginPath();
+      ctx.moveTo(p.x, p.y);
+      ctx.lineTo(x, y);
+      ctx.stroke();
+    }
     ctx.beginPath();
     ctx.arc(x, y, brushSize, 0, Math.PI * 2);
     ctx.fill();
+    last.current = { x, y };
 
     // measure scratch progress over just the reward-name area, not the whole card
     if (++moves.current % 6 === 0 && !fired.current) {
@@ -251,6 +266,7 @@ export default function ScratchCard({
 
   const start = (e) => {
     drawing.current = true;
+    last.current = null; // begin a fresh stroke
     if (!started.current) {
       started.current = true;
       onScratchStart?.();
@@ -259,7 +275,10 @@ export default function ScratchCard({
     eraseAt(e);
   };
   const move = (e) => drawing.current && eraseAt(e);
-  const stop = () => (drawing.current = false);
+  const stop = () => {
+    drawing.current = false;
+    last.current = null;
+  };
 
   return (
     // outer wrapper is NOT masked, so the border stroke isn't clipped

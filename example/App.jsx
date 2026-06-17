@@ -14,7 +14,7 @@ export default function App() {
         display: "grid",
         placeItems: "center",
         gap: 32,
-        // background: "#C81E14",
+        background: "#171717",
         color: "#fff",
         fontFamily: "system-ui, sans-serif",
       }}
@@ -83,6 +83,7 @@ export default function App() {
         revealedBg="#fff"
         revealedTextColor="#C2410C"
         borderColor="#FF7E3E"
+        // autoReveal={true}
         borderWidth={3}
         background="linear-gradient(207.8deg, #994F75 1.4%, #B7678E 40.31%, #D084A7 59.76%, #E8AFC1 98.68%);"
         onComplete={() => console.log("scratch card revealed!")}
