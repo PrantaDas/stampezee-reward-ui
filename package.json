@@ -1,6 +1,6 @@
 {
   "name": "stampezee-reward-ui",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "StampEzee reward UI for React: a glowing ripple badge and a scratch-to-reveal ticket card, both with falling-glitter confetti.",
   "type": "module",
   "main": "./dist/index.cjs",
