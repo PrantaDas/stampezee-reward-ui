@@ -95,6 +95,7 @@ export default function ScratchCard({
   const started = useRef(false); // onScratchStart fired once
   const fired = useRef(false); // glitter/onComplete fired once
   const [revealed, setRevealed] = useState(false);
+  const [painted, setPainted] = useState(false); // canvas cover drawn yet?
 
   function paintCover() {
     const cv = canvasRef.current;
@@ -157,6 +158,7 @@ export default function ScratchCard({
   // paint before the browser shows the frame, else the reward flashes unscratched
   useLayoutEffect(() => {
     paintCover();
+    setPainted(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [background, width, height, watermark, tearLine]);
 
@@ -319,6 +321,19 @@ export default function ScratchCard({
           )}
           {children}
         </div>
+
+        {/* CSS cover fallback: hides the reward until the canvas is painted
+            (server render / first client frame have no canvas pixels) */}
+        {!painted && (
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              inset: 0,
+              background: background.replace(/;\s*$/, ""),
+            }}
+          />
+        )}
 
         {/* scratch cover */}
         <canvas
